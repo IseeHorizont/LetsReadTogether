@@ -9,6 +9,6 @@
 -- values (7, 'Исторический детектив');
 
 
-insert into clients (id, login)
-values (1, 'TestClient-1');
+-- insert into clients (id, login)
+-- values (1, 'TestClient-1');
 

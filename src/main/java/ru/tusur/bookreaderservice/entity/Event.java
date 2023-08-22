@@ -37,10 +37,8 @@ public class Event {
     private String endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Client client;
+    private User user;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Category category;
     @Column(name = "category_name")
     private String categoryName;
 }

@@ -2,10 +2,13 @@ package ru.tusur.bookreaderservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.tusur.bookreaderservice.entity.Client;
 import ru.tusur.bookreaderservice.entity.Event;
+import ru.tusur.bookreaderservice.entity.User;
+import ru.tusur.bookreaderservice.exception.EventServiceException;
 import ru.tusur.bookreaderservice.repository.EventRepository;
+import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.EventService;
 
 import java.util.List;
@@ -16,9 +19,11 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
-    public EventServiceImpl(EventRepository eventRepository) {
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
         this.eventRepository = eventRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Event> getAllEvents() {
@@ -28,48 +33,50 @@ public class EventServiceImpl implements EventService {
     }
 
     @Transactional
-    public Event createEvent(String clientLogin, Event event) {
-        Client client = new Client();
-        client.setId(1L);
-        client.setLogin("TestClient-1");
-        //Client client = clientService.getByLogin(clientLogin); // todo call to ClientService ?
+    public Event createEvent(String userEmail, Event event) {
+        log.info("Got for create userEmail:'{}', event: {}", userEmail, event);
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EventServiceException("User not found by email like: " + userEmail));
+        event.setUser(user);
 
-        event.setClient(client);
         Event createdEvent = eventRepository.save(event);
         log.info("CreatedEvent: {}", createdEvent);
         return createdEvent;
     }
 
     public Event getEventById(Long eventId) {
-        Event foundEvent = eventRepository.getById(eventId);
+        Event foundEvent = eventRepository.findById(eventId)
+                        .orElseThrow(() -> new EventServiceException("User by id#" + eventId + " not found"));
         log.info("FoundEvent: {}", foundEvent);
         return foundEvent;
     }
 
-    public Event updateEvent(String clientLogin, Long eventId, Event event) {
+    @Transactional
+    public Event updateEvent(String userName, Long eventId, Event event) {
         Optional<Event> foundEvent = eventRepository.findById(eventId);
         if (foundEvent.isPresent()) {
             Event updatedEvent = new Event();
             updatedEvent.setId(eventId);
             updatedEvent.setDescription(event.getDescription());
-            // todo update categoryName
+            updatedEvent.setCategoryName(event.getCategoryName());
             updatedEvent.setBookTitle(event.getBookTitle());
             updatedEvent.setBookAuthor(event.getBookAuthor());
             updatedEvent.setBookPublicationYear(event.getBookPublicationYear());
             updatedEvent.setStartDate(event.getStartDate());
             updatedEvent.setEndDate(event.getEndDate());
-            //updatedEvent.setCreatorId(event.getCreatorId());
-            //updatedEvent.setCategoryId(event.getCategoryId());
             log.info("UpdatedEvent: {}", updatedEvent);
             return updatedEvent;
         } else {
-            // todo create if not exist by id
+            // create event if it doesn't exist by id
             event.setId(eventId);
-            Event createdEvent = createEvent(clientLogin, event);
+            Event createdEvent = createEvent(userName, event);
             log.info("CreatedEvent: {}", createdEvent);
             return createdEvent;
         }
     }
 
-
+    @Transactional
+    public void deleteEventById(Long eventId) {
+        // todo change status in-active instead of deleting
+    }
 }

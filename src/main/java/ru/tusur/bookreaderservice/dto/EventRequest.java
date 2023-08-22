@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString
 public class EventRequest {
 
     private String description;

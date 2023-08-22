@@ -36,7 +36,7 @@ public class EventCustomMapper {
         eventResponse.setStartDate(event.getStartDate());
         eventResponse.setEndDate(event.getEndDate());
 
-        eventResponse.setCreatorName(event.getClient().getLogin());
+        eventResponse.setCreatorName(event.getUser().getEmail()); // todo replace name or leave an email?
 
         log.info("Mapped: {}", eventResponse);
         return eventResponse;
