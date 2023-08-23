@@ -1,5 +1,7 @@
 package ru.tusur.bookreaderservice.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
-    private String firstname; // todo maybe instead of login
-    private String lastname; // todo
+    @Pattern(regexp = "^(.+)@(\\S+) $", message = "Не верный формат email-адреса")
     private String email;
-    private String password;
 
-    // todo some fields?
+    @NotBlank(message = "Пароль не может быть пустым")
+    private String password;
 
 }
