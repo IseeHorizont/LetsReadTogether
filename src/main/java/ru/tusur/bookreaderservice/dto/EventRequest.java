@@ -1,9 +1,11 @@
 package ru.tusur.bookreaderservice.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
+@Builder
 public class EventRequest {
 
     private String description;

@@ -55,15 +55,16 @@ public class EventServiceImpl implements EventService {
     public Event updateEvent(String userName, Long eventId, Event event) {
         Optional<Event> foundEvent = eventRepository.findById(eventId);
         if (foundEvent.isPresent()) {
-            Event updatedEvent = new Event();
-            updatedEvent.setId(eventId);
-            updatedEvent.setDescription(event.getDescription());
-            updatedEvent.setCategoryName(event.getCategoryName());
-            updatedEvent.setBookTitle(event.getBookTitle());
-            updatedEvent.setBookAuthor(event.getBookAuthor());
-            updatedEvent.setBookPublicationYear(event.getBookPublicationYear());
-            updatedEvent.setStartDate(event.getStartDate());
-            updatedEvent.setEndDate(event.getEndDate());
+            Event updatedEvent = Event.builder()
+                    .id(eventId)
+                    .description(event.getDescription())
+                    .categoryName(event.getCategoryName())
+                    .bookTitle(event.getBookTitle())
+                    .bookAuthor(event.getBookAuthor())
+                    .bookPublicationYear(event.getBookPublicationYear())
+                    .startDate(event.getStartDate())
+                    .endDate(event.getEndDate())
+                    .build();
             log.info("UpdatedEvent: {}", updatedEvent);
             return updatedEvent;
         } else {
