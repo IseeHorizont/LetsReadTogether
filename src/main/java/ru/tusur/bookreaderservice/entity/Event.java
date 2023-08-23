@@ -2,6 +2,7 @@ package ru.tusur.bookreaderservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 
 @Table(name = "events")
@@ -40,4 +41,7 @@ public class Event {
 
     @Column(name = "category_name")
     private String categoryName;
+
+    @Column(name = "active")
+    private boolean isActive;
 }
