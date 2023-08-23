@@ -27,7 +27,9 @@ public class EventServiceImpl implements EventService {
     }
 
     public List<Event> getAllEvents() {
-        List<Event> resultList = eventRepository.findAll();
+        List<Event> resultList = eventRepository.findAll().stream()
+                .filter(Event::isActive)
+                .toList();
         log.info("From Repo we got: {}", resultList);
         return resultList;
     }
@@ -39,6 +41,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EventServiceException("User not found by email like: " + userEmail));
         event.setUser(user);
 
+        event.setActive(true);
         Event createdEvent = eventRepository.save(event);
         log.info("CreatedEvent: {}", createdEvent);
         return createdEvent;
@@ -46,30 +49,36 @@ public class EventServiceImpl implements EventService {
 
     public Event getEventById(Long eventId) {
         Event foundEvent = eventRepository.findById(eventId)
-                        .orElseThrow(() -> new EventServiceException("User by id#" + eventId + " not found"));
+                        .orElseThrow(() -> new EventServiceException("Event by id#" + eventId + " not found"));
         log.info("FoundEvent: {}", foundEvent);
+        if (!foundEvent.isActive()) {
+            throw new EventServiceException("Event by id#" + eventId + " not found");
+        }
         return foundEvent;
     }
 
     @Transactional
     public Event updateEvent(String userName, Long eventId, Event event) {
         Optional<Event> foundEvent = eventRepository.findById(eventId);
+        event.setActive(true);
         if (foundEvent.isPresent()) {
-            Event updatedEvent = new Event();
-            updatedEvent.setId(eventId);
-            updatedEvent.setDescription(event.getDescription());
-            updatedEvent.setCategoryName(event.getCategoryName());
-            updatedEvent.setBookTitle(event.getBookTitle());
-            updatedEvent.setBookAuthor(event.getBookAuthor());
-            updatedEvent.setBookPublicationYear(event.getBookPublicationYear());
-            updatedEvent.setStartDate(event.getStartDate());
-            updatedEvent.setEndDate(event.getEndDate());
-            log.info("UpdatedEvent: {}", updatedEvent);
+            Event updatingEvent = Event.builder()
+                    .id(eventId)
+                    .description(event.getDescription())
+                    .categoryName(event.getCategoryName())
+                    .bookTitle(event.getBookTitle())
+                    .bookAuthor(event.getBookAuthor())
+                    .bookPublicationYear(event.getBookPublicationYear())
+                    .startDate(event.getStartDate())
+                    .endDate(event.getEndDate())
+                    .build();
+            Event updatedEvent = eventRepository.save(updatingEvent);
+            log.info("Updated event: {}", updatedEvent);
             return updatedEvent;
         } else {
             // create event if it doesn't exist by id
             event.setId(eventId);
-            Event createdEvent = createEvent(userName, event);
+            Event createdEvent = eventRepository.save(event);
             log.info("CreatedEvent: {}", createdEvent);
             return createdEvent;
         }
@@ -77,6 +86,11 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     public void deleteEventById(Long eventId) {
-        // todo change status in-active instead of deleting
+        Event foundEvent = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EventServiceException("Event by id#" + eventId + " for deleting not found"));
+        log.info("Found event by id#{}: {}", eventId, foundEvent);
+        foundEvent.setActive(false);
+        Event deletedEvent = eventRepository.save(foundEvent);
+        log.info("Deleted event: {}", deletedEvent);
     }
 }

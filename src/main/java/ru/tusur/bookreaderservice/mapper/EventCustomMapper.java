@@ -9,34 +9,37 @@ import ru.tusur.bookreaderservice.entity.Event;
 public class EventCustomMapper {
 
     public static Event eventRequestToEvent(EventRequest eventRequest) {
-        Event event = new Event();
-        event.setDescription(eventRequest.getDescription());
+        Event event = Event.builder()
+                .description(eventRequest.getDescription())
 
-        event.setCategoryName(eventRequest.getCategoryName());
-        event.setBookTitle(eventRequest.getBookTitle());
-        event.setBookAuthor(eventRequest.getBookAuthor());
-        event.setBookPublicationYear(eventRequest.getBookPublicationYear());
+                .categoryName(eventRequest.getCategoryName())
+                .bookTitle(eventRequest.getBookTitle())
+                .bookAuthor(eventRequest.getBookAuthor())
+                .bookPublicationYear(eventRequest.getBookPublicationYear())
 
-        event.setStartDate(eventRequest.getStartDate());
-        event.setEndDate(eventRequest.getEndDate());
+                .startDate(eventRequest.getStartDate())
+                .endDate(eventRequest.getEndDate())
+                .build();
+
         log.info("Mapped: {}", event);
         return event;
     }
 
     public static EventResponse eventToEventResponse(Event event) {
-        EventResponse eventResponse = new EventResponse();
-        eventResponse.setId(event.getId());
-        eventResponse.setDescription(event.getDescription());
+        EventResponse eventResponse = EventResponse.builder()
+                .id(event.getId())
+                .description(event.getDescription())
 
-        eventResponse.setCategoryName(event.getCategoryName());
-        eventResponse.setBookTitle(event.getBookTitle());
-        eventResponse.setBookAuthor(event.getBookAuthor());
-        eventResponse.setBookPublicationYear(event.getBookPublicationYear());
+                .categoryName(event.getCategoryName())
+                .bookTitle(event.getBookTitle())
+                .bookAuthor(event.getBookAuthor())
+                .bookPublicationYear(event.getBookPublicationYear())
 
-        eventResponse.setStartDate(event.getStartDate());
-        eventResponse.setEndDate(event.getEndDate());
+                .startDate(event.getStartDate())
+                .endDate(event.getEndDate())
 
-        eventResponse.setCreatorName(event.getUser().getEmail()); // todo replace name or leave an email?
+                .creatorName(event.getUser().getUsername())
+                .build();
 
         log.info("Mapped: {}", eventResponse);
         return eventResponse;
