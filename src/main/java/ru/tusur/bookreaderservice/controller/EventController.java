@@ -1,8 +1,11 @@
 package ru.tusur.bookreaderservice.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tusur.bookreaderservice.dto.EventRequest;
 import ru.tusur.bookreaderservice.dto.EventResponse;
@@ -16,6 +19,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping(value = "/api/v1/event/")
 @Slf4j
 public class EventController {
@@ -36,7 +40,7 @@ public class EventController {
     }
 
     @PostMapping(value = "")
-    public EventResponse createEvent(@RequestBody EventRequest eventRequest) {
+    public EventResponse createEvent(@Valid @RequestBody EventRequest eventRequest) {
         log.info("SecurityContextHolder.getContext().getAuthentication().getName(): '{}'",
                 SecurityContextHolder.getContext().getAuthentication().getName());
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -50,7 +54,7 @@ public class EventController {
     }
 
     @GetMapping(value = "{eventId}")
-    public EventResponse getEventById(@PathVariable("eventId") Long eventId) {
+    public EventResponse getEventById(@PathVariable("eventId") @Min(1) Long eventId) {
         log.info("Got eventId: {}", eventId);
         Event foundEvent = eventService.getEventById(eventId);
         log.info("FoundEvent: {}", foundEvent);
@@ -59,8 +63,8 @@ public class EventController {
     }
 
     @PutMapping(value = "{eventId}")
-    public EventResponse updateEvent(@PathVariable("eventId") Long eventId,
-                                     @RequestBody EventRequest eventRequest) {
+    public EventResponse updateEvent(@PathVariable("eventId") @Min(1) Long eventId,
+                                     @Valid @RequestBody EventRequest eventRequest) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Got eventId: {} & eventRequest: {} from client '{}'", eventId, eventRequest, userName);
         Event updatedEvent = eventService.updateEvent(
@@ -73,7 +77,7 @@ public class EventController {
     }
 
     @DeleteMapping(value = "{eventId}")
-    public void deleteEventById(@PathVariable("eventId") Long eventId) {
+    public void deleteEventById(@PathVariable("eventId") @Min(1) Long eventId) {
         log.info("Got eventId: {} for deleting", eventId);
         eventService.deleteEventById(eventId);
     }
