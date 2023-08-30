@@ -12,7 +12,10 @@ import ru.tusur.bookreaderservice.dto.AuthenticationRequest;
 import ru.tusur.bookreaderservice.dto.AuthenticationResponse;
 import ru.tusur.bookreaderservice.entity.Role;
 import ru.tusur.bookreaderservice.entity.User;
+import ru.tusur.bookreaderservice.exception.RegistrationException;
 import ru.tusur.bookreaderservice.repository.UserRepository;
+
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -33,6 +36,14 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         log.info("Got registerRequest: {}", request); // todo open password in request
+
+        Optional<User> foundUser = userRepository.findByEmail(request.getEmail());
+        if (foundUser.isPresent()) {
+            throw new RegistrationException(String.format("Пользователь с email: {} уже зарегистрирован",
+                    foundUser.get().getUsername())
+            );
+        }
+
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))

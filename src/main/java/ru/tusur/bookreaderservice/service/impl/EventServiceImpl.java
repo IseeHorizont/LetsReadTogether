@@ -2,7 +2,6 @@ package ru.tusur.bookreaderservice.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.tusur.bookreaderservice.entity.Event;
 import ru.tusur.bookreaderservice.entity.User;
