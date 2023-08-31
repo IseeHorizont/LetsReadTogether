@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 @Table(name = "events")
 @Entity
@@ -21,6 +24,9 @@ public class Event {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "event_image")
+    private String eventImage;
+
     @Column(name = "book_title")
     private String bookTitle;
 
@@ -35,6 +41,9 @@ public class Event {
 
     @Column(name = "end_date")
     private String endDate;
+
+    @Column(name = "created_date")
+    private LocalDate createdAt = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

@@ -10,6 +10,7 @@ public class EventResponse {
 
     private Long id;
     private String description;
+    private String eventImage;
 
     private String categoryName;
     private String bookTitle;
@@ -18,6 +19,8 @@ public class EventResponse {
 
     private String startDate;
     private String endDate;
+
+    private String createdAt;
 
     private String creatorName;
     private String avatar;

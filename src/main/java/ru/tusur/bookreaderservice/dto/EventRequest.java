@@ -12,6 +12,8 @@ public class EventRequest {
     @NotBlank
     private String description;
 
+    private String eventImage;
+
     @NotBlank
     private String bookTitle;
 

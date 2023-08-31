@@ -3,7 +3,7 @@ package ru.tusur.bookreaderservice.util;
 import java.util.List;
 import java.util.Random;
 
-public class AvatarGeneratorUtil {
+public class ImageGeneratorUtil {
     // todo extra avatars
     // https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671122.jpg?w=2000&t=st=1693473305~exp=1693473905~hmac=32b562413c5c4def0b08b1d17ebbef01c99faeb76bb96a0eb290f4696e7a4837
     // https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671116.jpg?w=2000&t=st=1693473351~exp=1693473951~hmac=ddd8c9113b1c536a0557b420d84d31049d8153c426a571361c9a5e791b8e52bf
@@ -21,6 +21,9 @@ public class AvatarGeneratorUtil {
             "https://img.freepik.com/premium-psd/people-avatar-3d-illustration_235528-1573.jpg?w=2000",
             "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671153.jpg?w=2000&t=st=1693473928~exp=1693474528~hmac=aa8151f64e22bccf3ca0099502f483c35d01abc77a05a20809f73860f923d080"
     );
+
+    public static final String EVENT_DEFAULT_IMAGE = "https://img.freepik.com/premium-vector/people-reading-park_73637-401.jpg?w=2000";
+
 
     public static String getRandomAvatarUrl() {
         Random random = new Random();

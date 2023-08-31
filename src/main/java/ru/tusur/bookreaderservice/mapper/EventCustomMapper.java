@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import ru.tusur.bookreaderservice.dto.EventRequest;
 import ru.tusur.bookreaderservice.dto.EventResponse;
 import ru.tusur.bookreaderservice.entity.Event;
-import ru.tusur.bookreaderservice.util.AvatarGeneratorUtil;
+import ru.tusur.bookreaderservice.util.ImageGeneratorUtil;
+
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 public class EventCustomMapper {
@@ -12,7 +14,9 @@ public class EventCustomMapper {
     public static Event eventRequestToEvent(EventRequest eventRequest) {
         Event event = Event.builder()
                 .description(eventRequest.getDescription())
-
+//                .eventImage(eventRequest.getEventImage() == null ? ImageGeneratorUtil.EVENT_DEFAULT_IMAGE
+//                                                                 : eventRequest.getEventImage()
+//                )
                 .categoryName(eventRequest.getCategoryName())
                 .bookTitle(eventRequest.getBookTitle())
                 .bookAuthor(eventRequest.getBookAuthor())
@@ -30,7 +34,9 @@ public class EventCustomMapper {
         EventResponse eventResponse = EventResponse.builder()
                 .id(event.getId())
                 .description(event.getDescription())
-
+                .eventImage(event.getEventImage()== null ? ImageGeneratorUtil.EVENT_DEFAULT_IMAGE
+                                                         : event.getEventImage()
+                )
                 .categoryName(event.getCategoryName())
                 .bookTitle(event.getBookTitle())
                 .bookAuthor(event.getBookAuthor())
@@ -38,10 +44,14 @@ public class EventCustomMapper {
 
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .createdAt(event.getCreatedAt() == null
+                        ? "24.02.2022"
+                        : event.getCreatedAt().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                )
 
                 // todo extract to facade
                 .creatorName(event.getUser().getNickname() == null ? "Some stranger" : event.getUser().getNickname())
-                .avatar(event.getUser().getAvatarImageUrl() == null ? AvatarGeneratorUtil.getRandomAvatarUrl()
+                .avatar(event.getUser().getAvatarImageUrl() == null ? ImageGeneratorUtil.getRandomAvatarUrl()
                                                                     : event.getUser().getAvatarImageUrl()
                 )
                 .build();

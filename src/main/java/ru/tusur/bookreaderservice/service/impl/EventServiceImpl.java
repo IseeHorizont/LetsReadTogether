@@ -9,7 +9,9 @@ import ru.tusur.bookreaderservice.exception.EventServiceException;
 import ru.tusur.bookreaderservice.repository.EventRepository;
 import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.EventService;
+import ru.tusur.bookreaderservice.util.ImageGeneratorUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +43,8 @@ public class EventServiceImpl implements EventService {
         event.setUser(user);
 
         event.setActive(true);
+        event.setCreatedAt(LocalDate.now());
+        event.setEventImage(event.getEventImage() == null ? ImageGeneratorUtil.EVENT_DEFAULT_IMAGE : event.getEventImage());
         Event createdEvent = eventRepository.save(event);
         log.info("CreatedEvent: {}", createdEvent);
         return createdEvent;
@@ -64,12 +68,14 @@ public class EventServiceImpl implements EventService {
             Event updatingEvent = Event.builder()
                     .id(eventId)
                     .description(event.getDescription())
+                    .eventImage(event.getEventImage())
                     .categoryName(event.getCategoryName())
                     .bookTitle(event.getBookTitle())
                     .bookAuthor(event.getBookAuthor())
                     .bookPublicationYear(event.getBookPublicationYear())
                     .startDate(event.getStartDate())
                     .endDate(event.getEndDate())
+                    .createdAt(LocalDate.now())
                     .build();
             Event updatedEvent = eventRepository.save(updatingEvent);
             log.info("Updated event: {}", updatedEvent);

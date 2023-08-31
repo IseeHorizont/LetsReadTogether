@@ -14,7 +14,7 @@ import ru.tusur.bookreaderservice.entity.Role;
 import ru.tusur.bookreaderservice.entity.User;
 import ru.tusur.bookreaderservice.exception.RegistrationException;
 import ru.tusur.bookreaderservice.repository.UserRepository;
-import ru.tusur.bookreaderservice.util.AvatarGeneratorUtil;
+import ru.tusur.bookreaderservice.util.ImageGeneratorUtil;
 
 import java.util.Optional;
 
@@ -51,7 +51,7 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .nickname(request.getNickname())
-                .avatarImageUrl(AvatarGeneratorUtil.getRandomAvatarUrl())
+                .avatarImageUrl(ImageGeneratorUtil.getRandomAvatarUrl())
                 .build();
 
         // save in DB
