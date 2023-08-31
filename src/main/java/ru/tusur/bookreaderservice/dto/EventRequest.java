@@ -1,12 +1,12 @@
 package ru.tusur.bookreaderservice.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EventRequest {
 
     @NotBlank

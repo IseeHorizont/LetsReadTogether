@@ -20,4 +20,5 @@ public class EventResponse {
     private String endDate;
 
     private String creatorName;
+    private String avatar;
 }

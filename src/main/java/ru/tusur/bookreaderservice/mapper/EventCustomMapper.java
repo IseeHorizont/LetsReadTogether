@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ru.tusur.bookreaderservice.dto.EventRequest;
 import ru.tusur.bookreaderservice.dto.EventResponse;
 import ru.tusur.bookreaderservice.entity.Event;
+import ru.tusur.bookreaderservice.util.AvatarGeneratorUtil;
 
 @Slf4j
 public class EventCustomMapper {
@@ -38,7 +39,11 @@ public class EventCustomMapper {
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
 
-                .creatorName(event.getUser().getUsername())
+                // todo extract to facade
+                .creatorName(event.getUser().getNickname() == null ? "Some stranger" : event.getUser().getNickname())
+                .avatar(event.getUser().getAvatarImageUrl() == null ? AvatarGeneratorUtil.getRandomAvatarUrl()
+                                                                    : event.getUser().getAvatarImageUrl()
+                )
                 .build();
 
         log.info("Mapped: {}", eventResponse);

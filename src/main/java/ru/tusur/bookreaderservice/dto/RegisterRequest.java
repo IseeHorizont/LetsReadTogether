@@ -15,6 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterRequest {
 
+    @NotBlank(message = "Имя не должно быть пустым")
+    private String nickname;
+
     @Email(message = "Не верный формат email-адреса", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotEmpty(message = "email-адрес не должен быть пустым")
     private String email;

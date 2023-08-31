@@ -30,6 +30,14 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String nickname;
+
+//    @Enumerated(EnumType.STRING)
+//    private Gender gender;
+
+    private String avatarImageUrl;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
