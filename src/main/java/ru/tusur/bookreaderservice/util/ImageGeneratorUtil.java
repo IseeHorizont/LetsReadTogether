@@ -22,6 +22,7 @@ public class ImageGeneratorUtil {
             "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671153.jpg?w=2000&t=st=1693473928~exp=1693474528~hmac=aa8151f64e22bccf3ca0099502f483c35d01abc77a05a20809f73860f923d080"
     );
 
+    public static final String USER_DEFAULT_AVATAR = "https://img.freepik.com/free-psd/3d-rendering-boy-avatar-emoji_23-2150603353.jpg?w=2000&t=st=1693488221~exp=1693488821~hmac=78e24ed138d73e3d6b14f1cab82235055cd8e5e599cbdd2609279959ac1b6f19";
     public static final String EVENT_DEFAULT_IMAGE = "https://img.freepik.com/premium-vector/people-reading-park_73637-401.jpg?w=2000";
 
 

@@ -3,7 +3,6 @@ package ru.tusur.bookreaderservice.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,7 @@ import ru.tusur.bookreaderservice.dto.EventRequest;
 import ru.tusur.bookreaderservice.dto.EventResponse;
 import ru.tusur.bookreaderservice.entity.Event;
 import ru.tusur.bookreaderservice.mapper.EventCustomMapper;
-//import ru.tusur.bookreaderservice.security.JwtAuthentication;
-//import ru.tusur.bookreaderservice.service.impl.AuthService;
 import ru.tusur.bookreaderservice.service.impl.EventServiceImpl;
-
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -35,6 +30,15 @@ public class EventController {
         List<Event> result = eventService.getAllEvents();
         log.info("Got request for all events: {}", result);
         return result.stream()
+                .map(EventCustomMapper::eventToEventResponse)
+                .toList();
+    }
+
+    @GetMapping(value = "new")
+    public List<EventResponse> getAllEvent(@Min(1) @RequestParam(name = "Limit") long eventsLimit) {
+        List<Event> eventList = eventService.getLastEventsByLimit(eventsLimit);
+        log.info("Got request for new events: {} with limit: {}", eventList, eventsLimit);
+        return eventList.stream()
                 .map(EventCustomMapper::eventToEventResponse)
                 .toList();
     }

@@ -14,7 +14,7 @@ public class EventCustomMapper {
     public static Event eventRequestToEvent(EventRequest eventRequest) {
         Event event = Event.builder()
                 .description(eventRequest.getDescription())
-//                .eventImage(eventRequest.getEventImage() == null ? ImageGeneratorUtil.EVENT_DEFAULT_IMAGE
+//                .eventImage(eventRequest.getEventImage() == null ? ImageGeneratorUtil.USER_DEFAULT_AVATAR
 //                                                                 : eventRequest.getEventImage()
 //                )
                 .categoryName(eventRequest.getCategoryName())
@@ -50,8 +50,8 @@ public class EventCustomMapper {
                 )
 
                 // todo extract to facade
-                .creatorName(event.getUser().getNickname() == null ? "Some stranger" : event.getUser().getNickname())
-                .avatar(event.getUser().getAvatarImageUrl() == null ? ImageGeneratorUtil.getRandomAvatarUrl()
+                .creatorName(event.getUser().getNickname() == null ? "Странный незнакомец" : event.getUser().getNickname())
+                .avatar(event.getUser().getAvatarImageUrl() == null ? ImageGeneratorUtil.USER_DEFAULT_AVATAR
                                                                     : event.getUser().getAvatarImageUrl()
                 )
                 .build();

@@ -27,10 +27,18 @@ public class EventServiceImpl implements EventService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public List<Event> getAllEvents() {
         List<Event> resultList = eventRepository.findAll().stream()
                 .filter(Event::isActive)
                 .toList();
+        log.info("From Repo we got: {}", resultList);
+        return resultList;
+    }
+
+    @Transactional
+    public List<Event> getLastEventsByLimit(long eventsLimit) {
+        List<Event> resultList = eventRepository.findLastEventsByLimit(eventsLimit);
         log.info("From Repo we got: {}", resultList);
         return resultList;
     }
