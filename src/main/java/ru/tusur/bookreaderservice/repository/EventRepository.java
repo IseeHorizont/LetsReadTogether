@@ -17,4 +17,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         nativeQuery = true
     )
     List<Event> findLastEventsByLimit(long limit);
+
+    @Query(
+        value = "SELECT * FROM events WHERE user_id = ?1",
+        nativeQuery = true
+    )
+    List<Event> findAllByUsername(Long userId);
 }

@@ -43,9 +43,23 @@ public class EventController {
                 .toList();
     }
 
+    @GetMapping(value = "own/")
+    public List<EventResponse> getAllEventsByCurrentUser() {
+        log.info("SecurityContextHolder...getName(): '{}'",
+                SecurityContextHolder.getContext().getAuthentication().getName());
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Got request for own events from client '{}'", username);
+
+        List<Event> eventsList = eventService.getAllEventsByUsername(username);
+        log.info("Got request for own events: {} by client: {}", eventsList, username);
+        return eventsList.stream()
+                .map(EventCustomMapper::eventToEventResponse)
+                .toList();
+    }
+
     @PostMapping(value = "")
     public EventResponse createEvent(@Valid @RequestBody EventRequest eventRequest) {
-        log.info("SecurityContextHolder.getContext().getAuthentication().getName(): '{}'",
+        log.info("SecurityContextHolder...getName(): '{}'",
                 SecurityContextHolder.getContext().getAuthentication().getName());
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Got request: {} from client '{}'", eventRequest, login);

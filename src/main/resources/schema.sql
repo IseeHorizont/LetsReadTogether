@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS events
     start_date VARCHAR (255),
     end_date VARCHAR (255),
     created_date VARCHAR (255),
-    creator_id BIGSERIAL,
+    user_id BIGSERIAL,
     category_name BIGSERIAL,
     active BOOLEAN,
-    CONSTRAINT fk_client FOREIGN KEY(creator_id) REFERENCES client(id)
+    CONSTRAINT fk_client FOREIGN KEY(user_id) REFERENCES client(id)
 );

@@ -44,6 +44,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Transactional
+    public List<Event> getAllEventsByUsername(String username) {
+        // find user by username(email)
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new EventServiceException("User not found by email like: " + username));
+
+        List<Event> resultList = eventRepository.findAllByUsername(user.getId());
+        log.info("From Repo, by user: {}/id#{}, we got: {}", username, user.getId(), resultList);
+        return resultList;
+    }
+
+    @Transactional
     public Event createEvent(String userEmail, Event event) {
         log.info("Got for create userEmail:'{}', event: {}", userEmail, event);
         User user = userRepository.findByEmail(userEmail)
