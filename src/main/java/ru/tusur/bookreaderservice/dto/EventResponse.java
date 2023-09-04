@@ -10,6 +10,7 @@ public class EventResponse {
 
     private Long id;
     private String description;
+    private String eventTitle;
     private String eventImage;
 
     private String categoryName;
@@ -23,5 +24,6 @@ public class EventResponse {
     private String createdAt;
 
     private String creatorName;
+    private String creatorEmail;
     private String avatar;
 }

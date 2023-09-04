@@ -10,6 +10,9 @@ import lombok.*;
 public class EventRequest {
 
     @NotBlank
+    private String eventTitle;
+
+    @NotBlank
     private String description;
 
     private String eventImage;

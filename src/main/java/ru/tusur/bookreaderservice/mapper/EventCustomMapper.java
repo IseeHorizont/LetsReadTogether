@@ -13,10 +13,9 @@ public class EventCustomMapper {
 
     public static Event eventRequestToEvent(EventRequest eventRequest) {
         Event event = Event.builder()
+                .eventTitle(eventRequest.getEventTitle())
                 .description(eventRequest.getDescription())
-//                .eventImage(eventRequest.getEventImage() == null ? ImageGeneratorUtil.USER_DEFAULT_AVATAR
-//                                                                 : eventRequest.getEventImage()
-//                )
+                .eventImage(eventRequest.getEventImage())
                 .categoryName(eventRequest.getCategoryName())
                 .bookTitle(eventRequest.getBookTitle())
                 .bookAuthor(eventRequest.getBookAuthor())
@@ -26,13 +25,14 @@ public class EventCustomMapper {
                 .endDate(eventRequest.getEndDate())
                 .build();
 
-        log.info("Mapped: {}", event);
+        //log.info("Mapped: {}", event);
         return event;
     }
 
     public static EventResponse eventToEventResponse(Event event) {
         EventResponse eventResponse = EventResponse.builder()
                 .id(event.getId())
+                .eventTitle(event.getEventTitle())
                 .description(event.getDescription())
                 .eventImage(event.getEventImage()== null ? ImageGeneratorUtil.EVENT_DEFAULT_IMAGE
                                                          : event.getEventImage()
@@ -54,9 +54,10 @@ public class EventCustomMapper {
                 .avatar(event.getUser().getAvatarImageUrl() == null ? ImageGeneratorUtil.USER_DEFAULT_AVATAR
                                                                     : event.getUser().getAvatarImageUrl()
                 )
+                .creatorEmail(event.getUser().getUsername())
                 .build();
 
-        log.info("Mapped: {}", eventResponse);
+        //log.info("Mapped: {}", eventResponse);
         return eventResponse;
     }
 }
