@@ -38,7 +38,9 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     public List<Event> getLastEventsByLimit(long eventsLimit) {
-        List<Event> resultList = eventRepository.findLastEventsByLimit(eventsLimit);
+        List<Event> resultList = eventRepository.findLastEventsByLimit(eventsLimit).stream()
+                .filter(Event::isActive)
+                .toList();
         log.info("From Repo we got: {}", resultList);
         return resultList;
     }
@@ -49,7 +51,9 @@ public class EventServiceImpl implements EventService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new EventServiceException("User not found by email like: " + username));
 
-        List<Event> resultList = eventRepository.findAllByUsername(user.getId());
+        List<Event> resultList = eventRepository.findAllByUsername(user.getId()).stream()
+                .filter(Event::isActive)
+                .toList();
         log.info("From Repo, by user: {}/id#{}, we got: {}", username, user.getId(), resultList);
         return resultList;
     }
