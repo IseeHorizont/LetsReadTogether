@@ -23,4 +23,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         nativeQuery = true
     )
     List<Event> findAllByUsername(Long userId);
+
+    // select category_name from events where active = true group by category_name order by count(category_name) desc;
+    @Query(
+        value = "SELECT category_name FROM events WHERE active = true " +
+                "GROUP BY category_name ORDER BY COUNT(category_name) DESC LIMIT ?1",
+        nativeQuery = true
+    )
+    List<String> getMostPopularEventTagsByLimit(long limit);
 }
