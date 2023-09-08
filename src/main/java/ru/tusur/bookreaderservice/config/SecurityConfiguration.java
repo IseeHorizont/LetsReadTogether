@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                                  "/api/v1/event/",
                                  "/api/v1/event/filter",
                                  "/api/v1/event/new",
-                                 "/api/v1/tags/popular"
+                                 "/api/v1/tags/popular",
+                                 "/api/v1/rating/{eventId}"
                 )
                 .permitAll()
                 .anyRequest()
