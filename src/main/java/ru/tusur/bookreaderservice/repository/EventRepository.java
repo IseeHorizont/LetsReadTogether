@@ -31,4 +31,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         nativeQuery = true
     )
     List<String> getMostPopularEventTagsByLimit(long limit);
+
+    @Query(
+        value = "SELECT * FROM events WHERE category_name = ?1",
+        nativeQuery = true
+    )
+    List<Event> findAllByCategoryName(String categoryName);
 }

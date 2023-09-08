@@ -2,6 +2,7 @@ package ru.tusur.bookreaderservice.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +29,17 @@ public class EventController {
     @GetMapping(value = "")
     public List<EventResponse> getAllEvent() {
         List<Event> result = eventService.getAllEvents();
+        log.info("Got request for all events: {}", result);
+        return result.stream()
+                .map(EventCustomMapper::eventToEventResponse)
+                .toList();
+    }
+
+    @GetMapping(value = "filter")
+    public List<EventResponse> getAllEventByCategoryName(
+            @NotBlank @RequestParam(name = "categoryName") String categoryName
+    ) {
+        List<Event> result = eventService.getAllEventsByCategoryName(categoryName);
         log.info("Got request for all events: {}", result);
         return result.stream()
                 .map(EventCustomMapper::eventToEventResponse)

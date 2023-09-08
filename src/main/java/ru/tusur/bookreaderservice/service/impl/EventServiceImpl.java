@@ -37,6 +37,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Transactional
+    public List<Event> getAllEventsByCategoryName(String categoryName) {
+        List<Event> resultList = eventRepository.findAllByCategoryName(categoryName).stream()
+                .filter(Event::isActive)
+                .toList();
+        log.info("From Repo we got by filter: '{}': {}", categoryName, resultList);
+        return resultList;
+    }
+
+    @Transactional
     public List<Event> getLastEventsByLimit(long eventsLimit) {
         List<Event> resultList = eventRepository.findLastEventsByLimit(eventsLimit).stream()
                 .filter(Event::isActive)
