@@ -1,21 +1,23 @@
 package ru.tusur.bookreaderservice.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.tusur.bookreaderservice.dto.EventRating;
 import ru.tusur.bookreaderservice.dto.EventRatingResponse;
+import ru.tusur.bookreaderservice.dto.VoteRequest;
+import ru.tusur.bookreaderservice.entity.Vote;
+import ru.tusur.bookreaderservice.entity.VoteKey;
+import ru.tusur.bookreaderservice.entity.VoteType;
 import ru.tusur.bookreaderservice.mapper.EventRatingCustomMapper;
 import ru.tusur.bookreaderservice.service.EventRatingService;
 
 @Slf4j
-@RestController
 @Validated
+@RestController
 @RequestMapping(value = "/api/v1/rating")
 public class RatingController {
 
@@ -31,5 +33,17 @@ public class RatingController {
         EventRating foundEventRating = eventRatingService.getEventRatingById(eventId);
         log.info("Found rating by eventId#{}: {}", eventId, foundEventRating);
         return EventRatingCustomMapper.eventRatingToEventRatingResponse(foundEventRating);
+    }
+
+    @PostMapping("/")
+    public Vote addVote(@Valid @RequestBody VoteRequest voteRequest) {
+        log.info("Got VoteRequest: {}", voteRequest);
+        Vote newVote = Vote.builder()
+                .voteKey(new VoteKey(voteRequest.getEventId(), voteRequest.getClientId()))
+                .vote(voteRequest.getVote().equals("LIKE") ? VoteType.LIKE : VoteType.DISLIKE)
+                .build();
+        Vote createdVote = eventRatingService.addVote(newVote);
+        log.info("Created new Vote: {}", createdVote);
+        return createdVote;
     }
 }

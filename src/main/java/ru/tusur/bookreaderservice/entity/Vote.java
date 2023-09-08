@@ -19,7 +19,6 @@ public class Vote {
     @EmbeddedId
     private VoteKey voteKey;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private VoteType vote;
 }

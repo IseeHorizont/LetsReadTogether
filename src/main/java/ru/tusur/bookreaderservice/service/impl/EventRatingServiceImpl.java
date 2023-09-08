@@ -39,4 +39,12 @@ public class EventRatingServiceImpl implements EventRatingService {
                 )
                 .build();
     }
+
+    @Transactional
+    public Vote addVote(Vote newVote) {
+        Vote createdVote = eventRatingRepository.save(newVote);
+        log.info("Created new vote: {}", createdVote);
+        return createdVote;
+    }
+
 }

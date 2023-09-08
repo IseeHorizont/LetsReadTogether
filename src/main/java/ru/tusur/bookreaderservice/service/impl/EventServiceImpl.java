@@ -56,7 +56,6 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     public List<Event> getAllEventsByUsername(String username) {
-        // find user by username(email)
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new EventServiceException("User not found by email like: " + username));
 
