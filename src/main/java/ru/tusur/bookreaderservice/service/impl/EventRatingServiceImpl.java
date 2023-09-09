@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import ru.tusur.bookreaderservice.dto.EventRating;
 import ru.tusur.bookreaderservice.entity.Vote;
 import ru.tusur.bookreaderservice.entity.VoteType;
+import ru.tusur.bookreaderservice.mapper.EventRatingCustomMapper;
 import ru.tusur.bookreaderservice.repository.EventRatingRepository;
 import ru.tusur.bookreaderservice.service.EventRatingService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +47,20 @@ public class EventRatingServiceImpl implements EventRatingService {
         Vote createdVote = eventRatingRepository.save(newVote);
         log.info("Created new vote: {}", createdVote);
         return createdVote;
+    }
+
+    @Transactional
+    public List<EventRating> getAllEventRating() {
+        List<Vote> allVotes = eventRatingRepository.findAll();
+        List<Long> allEventIdsHaveVote = allVotes.stream()
+                .map(vote -> vote.getVoteKey().getEventId())
+                .distinct()
+                .toList();
+        //log.info("All EventIds Have Vote: {}", allEventIdsHaveVote);
+        List<EventRating> resultEventRatingList = new ArrayList<>();
+        allEventIdsHaveVote.forEach(id -> resultEventRatingList.add(getEventRatingById(id)));
+        log.info("Result Event RatingList: {}", resultEventRatingList);
+        return resultEventRatingList;
     }
 
 }

@@ -3,6 +3,7 @@ package ru.tusur.bookreaderservice.mapper;
 import lombok.extern.slf4j.Slf4j;
 import ru.tusur.bookreaderservice.dto.EventRating;
 import ru.tusur.bookreaderservice.dto.EventRatingResponse;
+import ru.tusur.bookreaderservice.entity.Vote;
 
 @Slf4j
 public class EventRatingCustomMapper {
@@ -14,6 +15,4 @@ public class EventRatingCustomMapper {
                 .dislikeCounter(foundEventRating.getDislikeCounter())
                 .build();
     }
-
-
 }

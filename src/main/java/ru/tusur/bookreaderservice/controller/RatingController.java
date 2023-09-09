@@ -15,6 +15,8 @@ import ru.tusur.bookreaderservice.entity.VoteType;
 import ru.tusur.bookreaderservice.mapper.EventRatingCustomMapper;
 import ru.tusur.bookreaderservice.service.EventRatingService;
 
+import java.util.List;
+
 @Slf4j
 @Validated
 @RestController
@@ -33,6 +35,12 @@ public class RatingController {
         EventRating foundEventRating = eventRatingService.getEventRatingById(eventId);
         log.info("Found rating by eventId#{}: {}", eventId, foundEventRating);
         return EventRatingCustomMapper.eventRatingToEventRatingResponse(foundEventRating);
+    }
+
+    @GetMapping(value = "/")
+    public List<EventRating> getAllEventRating() {
+        List<EventRating> allRatings = eventRatingService.getAllEventRating();
+        return allRatings;
     }
 
     @PostMapping("/")
