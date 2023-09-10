@@ -8,6 +8,8 @@ import ru.tusur.bookreaderservice.exception.ClientServiceException;
 import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.ClientService;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class ClientServiceImpl implements ClientService {
@@ -22,5 +24,14 @@ public class ClientServiceImpl implements ClientService {
     public User getClientDataByUsername(String username) {
         return userRepository.findByEmail(username)
                 .orElseThrow(() -> new ClientServiceException("User not found by email like: " + username));
+    }
+
+    @Override
+    public Long getClientIdByEmail(String email) {
+        Optional<User> foundUser = userRepository.findByEmail(email);
+        if (foundUser.isEmpty()) {
+            new ClientServiceException("User not found by email: " + email);
+        }
+        return foundUser.get().getId();
     }
 }
