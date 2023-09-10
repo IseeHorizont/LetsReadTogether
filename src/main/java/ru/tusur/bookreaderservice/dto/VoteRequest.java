@@ -13,7 +13,8 @@ public class VoteRequest {
 
     private Long eventId;
 
-    private Long clientId;
+    //private Long clientId;
+    private String email;
 
     private String vote;
 }

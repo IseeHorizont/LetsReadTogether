@@ -4,15 +4,18 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tusur.bookreaderservice.dto.EventRating;
 import ru.tusur.bookreaderservice.dto.EventRatingResponse;
 import ru.tusur.bookreaderservice.dto.VoteRequest;
+import ru.tusur.bookreaderservice.entity.User;
 import ru.tusur.bookreaderservice.entity.Vote;
 import ru.tusur.bookreaderservice.entity.VoteKey;
 import ru.tusur.bookreaderservice.entity.VoteType;
 import ru.tusur.bookreaderservice.mapper.EventRatingCustomMapper;
+import ru.tusur.bookreaderservice.service.ClientService;
 import ru.tusur.bookreaderservice.service.EventRatingService;
 
 import java.util.List;
@@ -24,9 +27,11 @@ import java.util.List;
 public class RatingController {
 
     private EventRatingService eventRatingService;
+    private ClientService clientService;
 
-    public RatingController(EventRatingService eventRatingService) {
+    public RatingController(EventRatingService eventRatingService, ClientService clientService) {
         this.eventRatingService = eventRatingService;
+        this.clientService = clientService;
     }
 
     @GetMapping(value = "{eventId}")
@@ -46,8 +51,10 @@ public class RatingController {
     @PostMapping("/")
     public Vote addVote(@Valid @RequestBody VoteRequest voteRequest) {
         log.info("Got VoteRequest: {}", voteRequest);
+        Long foundUsersId = clientService.getClientIdByEmail(voteRequest.getEmail());
+
         Vote newVote = Vote.builder()
-                .voteKey(new VoteKey(voteRequest.getEventId(), voteRequest.getClientId()))
+                .voteKey(new VoteKey(voteRequest.getEventId(), foundUsersId))
                 .vote(voteRequest.getVote().equals("LIKE") ? VoteType.LIKE : VoteType.DISLIKE)
                 .build();
         Vote createdVote = eventRatingService.addVote(newVote);
