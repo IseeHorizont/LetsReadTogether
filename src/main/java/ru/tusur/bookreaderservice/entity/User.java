@@ -32,11 +32,7 @@ public class User implements UserDetails {
 
     private String nickname;
 
-//    @Enumerated(EnumType.STRING)
-//    private Gender gender;
-
     private String avatarImageUrl;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
