@@ -49,6 +49,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                //.role(request.getRole() == null ? Role.USER : Role.ADMIN)
                 .role(Role.USER)
                 .nickname(request.getNickname())
                 .avatarImageUrl(ImageGeneratorUtil.getRandomAvatarUrl())
