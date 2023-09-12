@@ -39,6 +39,10 @@ public class SecurityConfiguration {
                                  "/api/v1/rating/"
                 )
                 .permitAll()
+
+                .requestMatchers("/api/v1/statistic/")
+                .hasAnyAuthority("ADMIN")
+
                 .anyRequest()
                 .authenticated()
                 .and()
