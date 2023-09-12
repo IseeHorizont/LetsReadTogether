@@ -79,6 +79,7 @@ public class AuthenticationService {
         log.info("Generated user's token: {}", jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .role(user.getRole().name())
                 .build();
     }
 }
