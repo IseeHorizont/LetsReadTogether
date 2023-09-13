@@ -9,7 +9,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.tusur.bookreaderservice.entity.Event;
 import ru.tusur.bookreaderservice.entity.User;
-import ru.tusur.bookreaderservice.mapper.EventCustomMapper;
 import ru.tusur.bookreaderservice.repository.EventRepository;
 import ru.tusur.bookreaderservice.repository.UserRepository;
 
