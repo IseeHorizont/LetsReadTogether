@@ -56,7 +56,6 @@ public class EventRatingServiceImpl implements EventRatingService {
                 .map(vote -> vote.getVoteKey().getEventId())
                 .distinct()
                 .toList();
-        //log.info("All EventIds Have Vote: {}", allEventIdsHaveVote);
         List<EventRating> resultEventRatingList = new ArrayList<>();
         allEventIdsHaveVote.forEach(id -> resultEventRatingList.add(getEventRatingById(id)));
         log.info("Result Event RatingList: {}", resultEventRatingList);
