@@ -33,7 +33,7 @@ public class EventRatingServiceTest {
                 .build();
         Vote vote2 = Vote.builder()
                 .voteKey(new VoteKey(eventId, 12L))
-                .vote(VoteType.LIKE)
+                .vote(VoteType.DISLIKE)
                 .build();
 
         List<Vote> allVotes = List.of(vote1, vote2);
