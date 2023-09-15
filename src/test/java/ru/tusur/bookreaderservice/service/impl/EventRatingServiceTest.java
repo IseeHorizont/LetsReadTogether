@@ -14,6 +14,9 @@ import ru.tusur.bookreaderservice.entity.VoteType;
 import ru.tusur.bookreaderservice.repository.EventRatingRepository;
 import java.util.List;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 @ExtendWith(MockitoExtension.class)
 public class EventRatingServiceTest {
 
@@ -33,7 +36,7 @@ public class EventRatingServiceTest {
                 .build();
         Vote vote2 = Vote.builder()
                 .voteKey(new VoteKey(eventId, 12L))
-                .vote(VoteType.LIKE)
+                .vote(VoteType.DISLIKE)
                 .build();
 
         List<Vote> allVotes = List.of(vote1, vote2);
@@ -43,6 +46,7 @@ public class EventRatingServiceTest {
         Assertions.assertNotNull(resultFromService);
         Assertions.assertEquals(1, resultFromService.getLikeCounter());
         Assertions.assertEquals(1, resultFromService.getDislikeCounter());
+        verify(eventRatingRepository).getAllByEventId(eventId);
     }
 
     @Test

@@ -15,6 +15,8 @@ import ru.tusur.bookreaderservice.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.Mockito.verify;
+
 @ExtendWith(MockitoExtension.class)
 public class EventServiceTest {
 
@@ -36,6 +38,7 @@ public class EventServiceTest {
         List<Event> resultEventList = eventService.getAllEvents();
         Assertions.assertNotNull(resultEventList);
         Assertions.assertIterableEquals(eventList, resultEventList);
+        verify(eventRepository).findAll();
     }
 
     @Test
@@ -49,6 +52,7 @@ public class EventServiceTest {
                 = eventService.getAllEventsByCategoryName(needCategoryName);
         Assertions.assertNotNull(filteredEventListByCategory);
         Assertions.assertIterableEquals(eventList, filteredEventListByCategory);
+        verify(eventRepository).findAllByCategoryName(needCategoryName);
     }
 
     @Test
@@ -59,6 +63,7 @@ public class EventServiceTest {
         Event foundEvent = eventService.getEventById(event.getId());
         Assertions.assertNotNull(foundEvent);
         Assertions.assertEquals(event.getId(), foundEvent.getId());
+        verify(eventRepository).findById(event.getId());
     }
 
     @Test
@@ -71,6 +76,8 @@ public class EventServiceTest {
         Event createdEvent = eventService.createEvent(user.getEmail(), eventForCreate);
         Assertions.assertNotNull(createdEvent);
         Assertions.assertEquals(eventForCreate.getId(), createdEvent.getId());
+        verify(userRepository).findByEmail(user.getEmail());
+        verify(eventRepository).save(eventForCreate);
     }
 
     private User getTestUser() {

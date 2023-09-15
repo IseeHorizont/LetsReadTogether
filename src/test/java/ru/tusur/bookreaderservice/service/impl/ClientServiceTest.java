@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.verify;
+
 @ExtendWith(MockitoExtension.class)
 public class ClientServiceTest {
 
@@ -29,6 +31,7 @@ public class ClientServiceTest {
         User foundUser = clientService.getClientDataByUsername(user.getUsername());
         Assertions.assertNotNull(foundUser);
         Assertions.assertEquals(user.getUsername(), foundUser.getUsername());
+        verify(userRepository).findByEmail(user.getEmail());
     }
 
     @Test
@@ -39,6 +42,7 @@ public class ClientServiceTest {
         Long foundUserId = clientService.getClientIdByEmail(user.getEmail());
         Assertions.assertNotNull(foundUserId);
         Assertions.assertEquals(user.getId(), foundUserId);
+        verify(userRepository).findByEmail(user.getEmail());
     }
 
     private User getTestUser() {
