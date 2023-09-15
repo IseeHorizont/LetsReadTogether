@@ -30,7 +30,7 @@ public class ClientServiceImpl implements ClientService {
     public Long getClientIdByEmail(String email) {
         Optional<User> foundUser = userRepository.findByEmail(email);
         if (foundUser.isEmpty()) {
-            new ClientServiceException("User not found by email: " + email);
+            throw new ClientServiceException("User not found by email: " + email);
         }
         return foundUser.get().getId();
     }

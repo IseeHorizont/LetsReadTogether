@@ -36,30 +36,25 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) {
-        log.info("Got registerRequest: {}", request); // todo open password in request
+        log.info("Got registerRequest: {}", request);
 
-        // checking that user already exists
         Optional<User> foundUser = userRepository.findByEmail(request.getEmail());
         if (foundUser.isPresent()) {
-            throw new RegistrationException(String.format("Пользователь с email: {} уже зарегистрирован",
+            throw new RegistrationException(String.format("Пользователь с email: %s уже зарегистрирован",
                     foundUser.get().getUsername())
             );
         }
-        // create new user
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                //.role(request.getRole() == null ? Role.USER : Role.ADMIN)
                 .role(Role.USER)
                 .nickname(request.getNickname())
                 .avatarImageUrl(ImageGeneratorUtil.getRandomAvatarUrl())
                 .build();
 
-        // save in DB
         userRepository.save(user);
         log.info("Saved user: {}", user);
 
-        // generate token for new user
         var jwtToken = jwtService.generateToken(user);
         log.info("Generated user's token: {}", jwtToken);
         return AuthenticationResponse.builder()
@@ -72,7 +67,8 @@ public class AuthenticationService {
         authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        String.format("Пользователь с email: %s не найден", request.getEmail())));
         log.info("Found user: {}", user);
 
         var jwtToken = jwtService.generateToken(user);
