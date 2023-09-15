@@ -2,6 +2,7 @@ package ru.tusur.bookreaderservice.controller;
 
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import ru.tusur.bookreaderservice.entity.Comment;
 import ru.tusur.bookreaderservice.mapper.CommentCustomMapper;
 import ru.tusur.bookreaderservice.service.CommentService;
 
+import java.util.List;
+
 
 @RestController
-@RequestMapping(value = "/api/v1/comment/")
+@RequestMapping(value = "/api/v1/comment")
 @Slf4j
 @Validated
 public class CommentController {
@@ -24,7 +27,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping(value = "")
+    @PostMapping(value = "/")
     public CommentResponse addNewComment(@Valid @RequestBody CommentRequest commentRequest) {
         log.info("Got commentRequest: {} ", commentRequest);
 
@@ -33,5 +36,13 @@ public class CommentController {
         log.info("Created new comment: {}", createdComment);
 
         return CommentCustomMapper.toCommentResponse(createdComment);
+    }
+
+    @GetMapping(value = "")
+    public List<Comment> getCommentsByEventId(@Min(1) @RequestParam(name = "eventId") Long eventId) {
+        log.info("Got request for comments by eventId#{}", eventId);
+        List<Comment> commentsByEventId = commentService.getCommentsByEventId(eventId);
+        log.info("Found comments by eventId#{}: {}", eventId, commentsByEventId);
+        return commentsByEventId;
     }
 }

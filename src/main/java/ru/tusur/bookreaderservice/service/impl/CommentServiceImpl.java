@@ -10,6 +10,7 @@ import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.CommentService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -37,6 +38,13 @@ public class CommentServiceImpl implements CommentService {
         Comment createdComment = commentRepository.save(comment);
         log.info("Created new comment: {}", createdComment);
         return createdComment;
+    }
+
+    @Override
+    public List<Comment> getCommentsByEventId(Long eventId) {
+        List<Comment> resultFromRepo = commentRepository.findAllByEventId(eventId);
+        log.info("From Repo we got: {}", resultFromRepo);
+        return resultFromRepo;
     }
 
 
