@@ -11,5 +11,7 @@ public class CommentResponse {
 
     private String nickname;
 
+    private String avatar;
+
     private String text;
 }

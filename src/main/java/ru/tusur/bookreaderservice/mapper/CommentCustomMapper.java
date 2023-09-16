@@ -9,7 +9,7 @@ public class CommentCustomMapper {
     public static Comment toComment(CommentRequest commentRequest) {
         return Comment.builder()
                 .eventId(commentRequest.getEventId())
-                .authorName(commentRequest.getUsername()) // here will be an email
+                .authorName(commentRequest.getUsername())
                 .text(commentRequest.getText())
                 .build();
     }
@@ -17,7 +17,8 @@ public class CommentCustomMapper {
     public static CommentResponse toCommentResponse(Comment comment) {
         return CommentResponse.builder()
                 .eventId(comment.getEventId())
-                .nickname(comment.getAuthorName())      // here must be user's name, not email
+                .nickname(comment.getAuthorName())
+                .avatar(comment.getAvatar())
                 .text(comment.getText())
                 .build();
     }

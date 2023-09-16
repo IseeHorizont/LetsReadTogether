@@ -27,6 +27,9 @@ public class Comment {
     @Column(name = "author_name")
     private String authorName;
 
+    @Column(name = "author_avatar")
+    private String avatar;
+
     @Column(name = "text")
     private String text;
 

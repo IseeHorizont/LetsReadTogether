@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.tusur.bookreaderservice.entity.Comment;
+import ru.tusur.bookreaderservice.entity.User;
 import ru.tusur.bookreaderservice.repository.CommentRepository;
 import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.CommentService;
@@ -28,13 +29,13 @@ public class CommentServiceImpl implements CommentService {
     public Comment addNewComment(Comment comment) {
         log.info("Got for create comment:'{}'", comment);
 
-        String userNickname = userRepository.findByEmail(comment.getAuthorName())
-                .orElseThrow(
-                    () -> new UsernameNotFoundException("User not found by email like:" + comment.getAuthorName())
-                )
-                .getNickname();
+        User user = userRepository.findByEmail(comment.getAuthorName()).orElseThrow(
+                () -> new UsernameNotFoundException("User not found by email like:" + comment.getAuthorName())
+        );
+        String userNickname = user.getNickname();
         comment.setAuthorName(userNickname);
         comment.setCreatedAt(LocalDate.now());
+        comment.setAvatar(user.getAvatarImageUrl());
         Comment createdComment = commentRepository.save(comment);
         log.info("Created new comment: {}", createdComment);
         return createdComment;
