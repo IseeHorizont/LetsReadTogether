@@ -56,4 +56,6 @@ public class Event {
 
     @Column(name = "active")
     private boolean isActive;
+
+    private Long commentCounter = 0L;
 }

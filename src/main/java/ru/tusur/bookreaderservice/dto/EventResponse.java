@@ -26,4 +26,6 @@ public class EventResponse {
     private String creatorName;
     private String creatorEmail;
     private String avatar;
+
+    private Long commentCounter;
 }

@@ -48,5 +48,8 @@ public class CommentServiceImpl implements CommentService {
         return resultFromRepo;
     }
 
-
+    @Override
+    public Long getCommentCounterByEventId(Long eventId) {
+        return commentRepository.getCommentCounterByEventId(eventId);
+    }
 }
