@@ -15,4 +15,16 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
         nativeQuery = true
     )
     List<Comment> findAllByEventId(Long eventId);
+
+    @Query(
+        value = "SELECT COUNT(*) FROM comments WHERE event_id = ?1",
+        nativeQuery = true
+    )
+    Long getCommentCounterByEventId(Long eventId);
+
+    @Query(
+        value = "SELECT * FROM comments ORDER BY created_date DESC LIMIT ?1",
+        nativeQuery = true
+    )
+    List<Comment> getLastCommentsWithLimit(long limit);
 }

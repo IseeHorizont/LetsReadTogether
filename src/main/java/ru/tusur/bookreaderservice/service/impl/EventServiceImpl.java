@@ -8,6 +8,7 @@ import ru.tusur.bookreaderservice.entity.User;
 import ru.tusur.bookreaderservice.exception.EventServiceException;
 import ru.tusur.bookreaderservice.repository.EventRepository;
 import ru.tusur.bookreaderservice.repository.UserRepository;
+import ru.tusur.bookreaderservice.service.CommentService;
 import ru.tusur.bookreaderservice.service.EventService;
 import ru.tusur.bookreaderservice.util.ImageGeneratorUtil;
 
@@ -22,15 +23,20 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
 
-    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {
+    private final CommentService commentService;
+
+    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository,
+                            CommentService commentService) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
+        this.commentService = commentService;
     }
 
     @Transactional
     public List<Event> getAllEvents() {
         List<Event> resultList = eventRepository.findAll().stream()
                 .filter(Event::isActive)
+                .peek(event -> event.setCommentCounter(commentService.getCommentCounterByEventId(event.getId())))
                 .toList();
         log.info("From Repo we got: {}", resultList);
         return resultList;
@@ -40,6 +46,7 @@ public class EventServiceImpl implements EventService {
     public List<Event> getAllEventsByCategoryName(String categoryName) {
         List<Event> resultList = eventRepository.findAllByCategoryName(categoryName).stream()
                 .filter(Event::isActive)
+                .peek(event -> event.setCommentCounter(commentService.getCommentCounterByEventId(event.getId())))
                 .toList();
         log.info("From Repo we got by filter: '{}': {}", categoryName, resultList);
         return resultList;
@@ -49,6 +56,7 @@ public class EventServiceImpl implements EventService {
     public List<Event> getLastEventsByLimit(long eventsLimit) {
         List<Event> resultList = eventRepository.findLastEventsByLimit(eventsLimit).stream()
                 .filter(Event::isActive)
+                .peek(event -> event.setCommentCounter(commentService.getCommentCounterByEventId(event.getId())))
                 .toList();
         log.info("From Repo we got: {}", resultList);
         return resultList;
@@ -61,6 +69,7 @@ public class EventServiceImpl implements EventService {
 
         List<Event> resultList = eventRepository.findAllByUsername(user.getId()).stream()
                 .filter(Event::isActive)
+                .peek(event -> event.setCommentCounter(commentService.getCommentCounterByEventId(event.getId())))
                 .toList();
         log.info("From Repo, by user: {}/id#{}, we got: {}", username, user.getId(), resultList);
         return resultList;
@@ -84,6 +93,7 @@ public class EventServiceImpl implements EventService {
     public Event getEventById(Long eventId) {
         Event foundEvent = eventRepository.findById(eventId)
                         .orElseThrow(() -> new EventServiceException("Event by id#" + eventId + " not found"));
+        foundEvent.setCommentCounter(commentService.getCommentCounterByEventId(foundEvent.getId()));
         log.info("FoundEvent: {}", foundEvent);
         if (!foundEvent.isActive()) {
             throw new EventServiceException("Event by id#" + eventId + " not found");
@@ -95,6 +105,7 @@ public class EventServiceImpl implements EventService {
     public Event updateEvent(String userName, Long eventId, Event event) {
         Optional<Event> foundEvent = eventRepository.findById(eventId);
         event.setActive(true);
+        event.setCommentCounter(commentService.getCommentCounterByEventId(event.getId()));
         if (foundEvent.isPresent()) {
             Event updatingEvent = Event.builder()
                     .id(eventId)

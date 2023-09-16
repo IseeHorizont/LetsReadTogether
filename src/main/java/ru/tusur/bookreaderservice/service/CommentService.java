@@ -9,4 +9,8 @@ public interface CommentService {
     Comment addNewComment(Comment comment);
 
     List<Comment> getCommentsByEventId(Long eventId);
+
+    Long getCommentCounterByEventId(Long eventId);
+
+    List<Comment> getLastCommentsWithLimit(long limit);
 }

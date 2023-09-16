@@ -45,4 +45,11 @@ public class CommentController {
         log.info("Found comments by eventId#{}: {}", eventId, commentsByEventId);
         return commentsByEventId;
     }
+
+    @GetMapping(value = "top")
+    public List<Comment> getLastCommentsWithLimit(@Min(3) @RequestParam(name = "limit") long limit) {
+        List<Comment> commentsByLimit = commentService.getLastCommentsWithLimit(limit);
+        log.info("Found comments with limit={}: {}", limit, commentsByLimit);
+        return commentsByLimit;
+    }
 }

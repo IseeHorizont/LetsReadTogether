@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS events
 (
     id BIGSERIAL UNIQUE PRIMARY KEY,
     event_title VARCHAR (255),
-    description VARCHAR (255),
+    description VARCHAR (1000),
     event_image VARCHAR (255),
     book_title VARCHAR (255),
     book_author VARCHAR (255),

@@ -55,6 +55,8 @@ public class EventCustomMapper {
                                                                     : event.getUser().getAvatarImageUrl()
                 )
                 .creatorEmail(event.getUser().getUsername())
+
+                .commentCounter(event.getCommentCounter() == null ? 0 : event.getCommentCounter())
                 .build();
 
         //log.info("Mapped: {}", eventResponse);
