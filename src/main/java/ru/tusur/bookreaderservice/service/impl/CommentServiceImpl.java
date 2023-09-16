@@ -52,4 +52,9 @@ public class CommentServiceImpl implements CommentService {
     public Long getCommentCounterByEventId(Long eventId) {
         return commentRepository.getCommentCounterByEventId(eventId);
     }
+
+    @Override
+    public List<Comment> getLastCommentsWithLimit(long limit) {
+        return commentRepository.getLastCommentsWithLimit(limit);
+    }
 }

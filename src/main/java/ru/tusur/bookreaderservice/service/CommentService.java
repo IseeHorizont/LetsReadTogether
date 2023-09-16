@@ -11,4 +11,6 @@ public interface CommentService {
     List<Comment> getCommentsByEventId(Long eventId);
 
     Long getCommentCounterByEventId(Long eventId);
+
+    List<Comment> getLastCommentsWithLimit(long limit);
 }

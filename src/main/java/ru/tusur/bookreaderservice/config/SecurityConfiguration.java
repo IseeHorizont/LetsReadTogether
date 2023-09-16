@@ -36,7 +36,8 @@ public class SecurityConfiguration {
                                  "/api/v1/event/new",
                                  "/api/v1/tags/popular",
                                  "/api/v1/rating/{eventId}",
-                                 "/api/v1/rating/"
+                                 "/api/v1/rating/",
+                                 "/api/v1/comment/top"
                 )
                 .permitAll()
 
