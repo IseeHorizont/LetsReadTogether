@@ -47,7 +47,7 @@ public class EventController {
     }
 
     @GetMapping(value = "new")
-    public List<EventResponse> getAllEvent(@Min(1) @RequestParam(name = "Limit") long eventsLimit) {
+    public List<EventResponse> getAllEvent(@Min(1) @RequestParam(name = "limit") long eventsLimit) {
         List<Event> eventList = eventService.getLastEventsByLimit(eventsLimit);
         log.info("Got request for new events: {} with limit: {}", eventList, eventsLimit);
         return eventList.stream()
