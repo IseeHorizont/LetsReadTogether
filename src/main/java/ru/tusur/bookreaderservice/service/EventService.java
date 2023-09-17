@@ -12,4 +12,6 @@ public interface EventService {
     Event getEventById(Long eventId);
 
     Event updateEvent(String clientLogin, Long eventId, Event event);
+
+    List<Event> getMostPopularEventsByRating(long eventsLimit);
 }
