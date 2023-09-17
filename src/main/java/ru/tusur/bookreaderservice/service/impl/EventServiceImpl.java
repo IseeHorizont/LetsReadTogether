@@ -9,12 +9,17 @@ import ru.tusur.bookreaderservice.exception.EventServiceException;
 import ru.tusur.bookreaderservice.repository.EventRepository;
 import ru.tusur.bookreaderservice.repository.UserRepository;
 import ru.tusur.bookreaderservice.service.CommentService;
+import ru.tusur.bookreaderservice.service.EventRatingService;
 import ru.tusur.bookreaderservice.service.EventService;
 import ru.tusur.bookreaderservice.util.ImageGeneratorUtil;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static ru.tusur.bookreaderservice.util.RatingCalculatorUtil.calculateRating;
 
 @Service
 @Slf4j
@@ -24,12 +29,14 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
 
     private final CommentService commentService;
+    private final EventRatingService eventRatingService;
 
     public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository,
-                            CommentService commentService) {
+                            CommentService commentService, EventRatingService eventRatingService) {
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.commentService = commentService;
+        this.eventRatingService = eventRatingService;
     }
 
     @Transactional
@@ -73,6 +80,22 @@ public class EventServiceImpl implements EventService {
                 .toList();
         log.info("From Repo, by user: {}/id#{}, we got: {}", username, user.getId(), resultList);
         return resultList;
+    }
+
+    @Transactional
+    public List<Event> getMostPopularEventsByRating(long eventsLimit) {
+        List<Event> allEvents = eventRepository.findAll();
+        // <eventId, rating>
+        Map<Long, Long> orderEvents = allEvents.stream()
+                .collect(Collectors.toMap(
+                    Event::getId,
+                    event -> calculateRating(eventRatingService.getEventRatingById(event.getId()))
+                ));
+        return orderEvents.entrySet().stream()
+                .sorted(Map.Entry.<Long, Long>comparingByValue().reversed())
+                .limit(eventsLimit)
+                .map(i -> getEventById(i.getKey()))
+                .toList();
     }
 
     @Transactional

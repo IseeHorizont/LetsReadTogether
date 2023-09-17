@@ -69,6 +69,15 @@ public class EventController {
                 .toList();
     }
 
+    @GetMapping(value = "popular")
+    public List<EventResponse> getMostPopularEventsByRating(@Min(5) @RequestParam(name = "limit") long eventsLimit) {
+        List<Event> eventList = eventService.getMostPopularEventsByRating(eventsLimit);
+        log.info("Got most popular events: {} with limit: {}", eventList, eventsLimit);
+        return eventList.stream()
+                .map(EventCustomMapper::eventToEventResponse)
+                .toList();
+    }
+
     @PostMapping(value = "")
     public EventResponse createEvent(@Valid @RequestBody EventRequest eventRequest) {
         log.info("SecurityContextHolder...getName(): '{}'",
