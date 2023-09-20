@@ -5,11 +5,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tusur.bookreaderservice.service.ClientService;
 import ru.tusur.bookreaderservice.service.StatisticService;
 import ru.tusur.bookreaderservice.service.TagService;
 
-import java.util.List;
 
 @Slf4j
 @Validated
@@ -18,11 +16,9 @@ import java.util.List;
 public class StatisticController {
 
     private final StatisticService statisticService;
-    private final TagService tagService;
 
-    public StatisticController(StatisticService statisticService, TagService tagService) {
+    public StatisticController(StatisticService statisticService) {
         this.statisticService = statisticService;
-        this.tagService = tagService;
     }
 
     @GetMapping(value = "allusers")
