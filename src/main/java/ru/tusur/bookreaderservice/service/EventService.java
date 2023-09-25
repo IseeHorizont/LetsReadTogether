@@ -5,6 +5,7 @@ import ru.tusur.bookreaderservice.entity.Event;
 import java.util.List;
 
 public interface EventService {
+
     List<Event> getAllEvents();
 
     Event createEvent(String clientLogin, Event event);

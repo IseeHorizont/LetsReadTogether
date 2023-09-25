@@ -23,14 +23,14 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public User getClientDataByUsername(String username) {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new ClientServiceException("User not found by email like: " + username));
+                .orElseThrow(() -> new ClientServiceException("Пользователь не найден по email: " + username));
     }
 
     @Override
     public Long getClientIdByEmail(String email) {
         Optional<User> foundUser = userRepository.findByEmail(email);
         if (foundUser.isEmpty()) {
-            throw new ClientServiceException("User not found by email: " + email);
+            throw new ClientServiceException("Пользователь не найден по email: " + email);
         }
         return foundUser.get().getId();
     }
