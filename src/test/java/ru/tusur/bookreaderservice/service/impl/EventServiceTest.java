@@ -24,6 +24,9 @@ public class EventServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private CommentServiceImpl commentService;
+
     @InjectMocks
     private EventServiceImpl eventService;
 

@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
         log.info("Got for create comment:'{}'", comment);
 
         User user = userRepository.findByEmail(comment.getAuthorName()).orElseThrow(
-                () -> new UsernameNotFoundException("User not found by email like:" + comment.getAuthorName())
+                () -> new UsernameNotFoundException("Пользователь не найден по email:" + comment.getAuthorName())
         );
         String userNickname = user.getNickname();
         comment.setAuthorName(userNickname);
